@@ -2,10 +2,10 @@
 #include <cstdlib>
 #include <png.h>
 #include <zlib.h>
-#include <boost/algorithm/string/predicate.hpp>
-#include <boost/filesystem/operations.hpp>
-#include <boost/regex.hpp>
-#include <boost/range/algorithm.hpp>
+//#include <boost/algorithm/string/predicate.hpp>
+//#include <boost/filesystem/operations.hpp>
+//#include <boost/regex.hpp>
+//#include <boost/range/algorithm.hpp>
 #ifdef APNG_SPECS_SUPPORTED
 #include "spec/specreader.h"
 #include "spec/specwriter.h"
@@ -56,68 +56,68 @@ namespace apngasm {
     {
       static std::vector<std::string> files;
 
-      boost::filesystem::path nativePath(filepath);
-      nativePath.make_preferred();
-
-      // filepath is current directory.
-      if( !nativePath.has_parent_path() )
-      {
-        const std::string currentDirPath = "." + std::string(1, boost::filesystem::path::preferred_separator);
-        nativePath = currentDirPath + nativePath.string();
-      }
-
-      // Clear temporary vector.
-      files.clear();
-
-      // File is unique.
-      if (nativePath.string().find('*', 0) == std::string::npos)
-      {
-        // Add extension
-        if (!boost::algorithm::iends_with(nativePath.string(), ".png"))
-          nativePath = nativePath.string() + ".png";
-
-        if (boost::filesystem::exists(nativePath))
-          files.push_back(nativePath.string());
-      }
-
-      // File path has wildcard.
-      else
-      {
-        const boost::filesystem::path &parentPath = nativePath.parent_path();
-
-        // Convert filepath.
-        static const boost::regex escape("[\\^\\.\\$\\|\\(\\)\\[\\]\\+\\?\\\\]");
-        static const boost::regex wildcard("\\*");
-
-        nativePath = boost::regex_replace(nativePath.string(), escape, "\\\\$0");
-        nativePath = boost::regex_replace(nativePath.string(), wildcard, ".*");
-
-        // Skip if directory is not found.
-        if (!boost::filesystem::exists(parentPath))
-          return files;
-
-        // Search files.
-        const boost::regex filter(nativePath.string());
-        const boost::filesystem::directory_iterator itEnd;
-        for (boost::filesystem::directory_iterator itCur(parentPath); itCur != itEnd; ++itCur)
-        {
-          // Skip if not a file.
-          if (!boost::filesystem::is_regular_file(itCur->status()))
-            continue;
-
-          // Skip if no match.
-          const std::string& curFilePath = itCur->path().string();
-          if (!boost::regex_match(curFilePath, filter))
-            continue;
-
-          // Add filepath if extension is png.
-          if (boost::algorithm::iends_with(curFilePath, ".png"))
-            files.push_back(curFilePath);
-        }
-
-        // Sort vector.
-        boost::sort(files);
-      }
+//      boost::filesystem::path nativePath(filepath);
+//      nativePath.make_preferred();
+//
+//      // filepath is current directory.
+//      if( !nativePath.has_parent_path() )
+//      {
+//        const std::string currentDirPath = "." + std::string(1, boost::filesystem::path::preferred_separator);
+//        nativePath = currentDirPath + nativePath.string();
+//      }
+//
+//      // Clear temporary vector.
+//      files.clear();
+//
+//      // File is unique.
+//      if (nativePath.string().find('*', 0) == std::string::npos)
+//      {
+//        // Add extension
+//        if (!boost::algorithm::iends_with(nativePath.string(), ".png"))
+//          nativePath = nativePath.string() + ".png";
+//
+//        if (boost::filesystem::exists(nativePath))
+//          files.push_back(nativePath.string());
+//      }
+//
+//      // File path has wildcard.
+//      else
+//      {
+//        const boost::filesystem::path &parentPath = nativePath.parent_path();
+//
+//        // Convert filepath.
+//        static const boost::regex escape("[\\^\\.\\$\\|\\(\\)\\[\\]\\+\\?\\\\]");
+//        static const boost::regex wildcard("\\*");
+//
+//        nativePath = boost::regex_replace(nativePath.string(), escape, "\\\\$0");
+//        nativePath = boost::regex_replace(nativePath.string(), wildcard, ".*");
+//
+//        // Skip if directory is not found.
+//        if (!boost::filesystem::exists(parentPath))
+//          return files;
+//
+//        // Search files.
+//        const boost::regex filter(nativePath.string());
+//        const boost::filesystem::directory_iterator itEnd;
+//        for (boost::filesystem::directory_iterator itCur(parentPath); itCur != itEnd; ++itCur)
+//        {
+//          // Skip if not a file.
+//          if (!boost::filesystem::is_regular_file(itCur->status()))
+//            continue;
+//
+//          // Skip if no match.
+//          const std::string& curFilePath = itCur->path().string();
+//          if (!boost::regex_match(curFilePath, filter))
+//            continue;
+//
+//          // Add filepath if extension is png.
+//          if (boost::algorithm::iends_with(curFilePath, ".png"))
+//            files.push_back(curFilePath);
+//        }
+//
+//        // Sort vector.
+//        boost::sort(files);
+//      }
 
       return files;
     }
