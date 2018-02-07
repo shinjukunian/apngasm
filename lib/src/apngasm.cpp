@@ -196,7 +196,7 @@ namespace apngasm {
   size_t APNGAsm::addFrame(const std::string &filePath, unsigned int delayNum, unsigned int delayDen)
   {
     const std::vector<std::string>& files = getFiles(filePath);
-    const int count = files.size();
+    const int count = (int)files.size();
 
     for(int i = 0;  i < count;  ++i)
     {
@@ -1333,7 +1333,7 @@ namespace apngasm {
       buf_IHDR[11] = 0;
       buf_IHDR[12] = 0;
 
-      png_save_uint_32(buf_acTL, _frames.size() - first);
+      png_save_uint_32(buf_acTL, (int)_frames.size() - first);
       png_save_uint_32(buf_acTL + 4, loops);
 
       fwrite(png_sign, 1, 8, f);
@@ -1459,7 +1459,7 @@ namespace apngasm {
         buf_fcTL[25] = bop;
         write_chunk(f, "fcTL", buf_fcTL, 26);
 
-        write_IDATs(f, n, zbuf, zsize, idat_size);
+        write_IDATs(f, (int)n, zbuf, zsize, idat_size);
 
         /* process apng dispose - begin */
         if (dop != 2)
@@ -1500,7 +1500,7 @@ namespace apngasm {
         write_chunk(f, "fcTL", buf_fcTL, 26);
       }
 
-      write_IDATs(f, _frames.size()-1, zbuf, zsize, idat_size);
+      write_IDATs(f, (int)_frames.size()-1, zbuf, zsize, idat_size);
 
       write_chunk(f, "tEXt", png_Software, 27);
       write_chunk(f, "IEND", 0, 0);
@@ -1692,7 +1692,7 @@ namespace apngasm {
     _fin_zstream.next_in = rows;
     _fin_zstream.avail_in = _op[n].h*(rowbytes + 1);
     deflate(&_fin_zstream, Z_FINISH);
-    *zsize = _fin_zstream.total_out;
+    *zsize = (int)_fin_zstream.total_out;
     deflateEnd(&_fin_zstream);
   }
 
@@ -1716,12 +1716,12 @@ namespace apngasm {
     _op[n].p = pdata;
     if (_op_zstream1.total_out < _op_zstream2.total_out)
     {
-      _op[n].size = _op_zstream1.total_out;
+      _op[n].size = (int)_op_zstream1.total_out;
       _op[n].filters = 0;
     }
     else
     {
-      _op[n].size = _op_zstream2.total_out;
+      _op[n].size = (int)_op_zstream2.total_out;
       _op[n].filters = 1;
     }
     _op[n].x = x;
@@ -1878,25 +1878,25 @@ namespace apngasm {
   void APNGAsm::write_chunk(FILE * f, const char * name, unsigned char * data, unsigned int length)
   {
     unsigned char buf[4];
-    unsigned int crc = crc32(0, Z_NULL, 0);
+    unsigned int crc = (int)crc32(0, Z_NULL, 0);
 
     png_save_uint_32(buf, length);
     fwrite(buf, 1, 4, f);
     fwrite(name, 1, 4, f);
-    crc = crc32(crc, (const Bytef *)name, 4);
+    crc = (int)crc32(crc, (const Bytef *)name, 4);
 
     if (memcmp(name, "fdAT", 4) == 0)
     {
       png_save_uint_32(buf, _next_seq_num++);
       fwrite(buf, 1, 4, f);
-      crc = crc32(crc, buf, 4);
+      crc = (int)crc32(crc, buf, 4);
       length -= 4;
     }
 
     if (data != NULL && length > 0)
     {
       fwrite(data, 1, length, f);
-      crc = crc32(crc, data, length);
+      crc = (int)crc32(crc, data, length);
     }
 
     png_save_uint_32(buf, crc);
@@ -1969,7 +1969,7 @@ namespace apngasm {
 
   const std::vector<APNGFrame>& APNGAsm::fileToFrames(const std::string &filePath, unsigned int delayNum, unsigned int delayDen)
   {
-    const int oldFrameCount = _frames.size();
+    const int oldFrameCount = (int)_frames.size();
     unsigned int   i, j, id;
     unsigned int   w, h;
     CHUNK chunk;
@@ -2272,7 +2272,7 @@ namespace apngasm {
   // Save png files.
   bool APNGAsm::savePNGs(const std::string& outputDir) const
   {
-    const int count = _frames.size();
+    const int count = (int)_frames.size();
     for(int i = 0;  i < count;  ++i)
     {
       const std::string outputPath = _listener->onCreatePngPath(outputDir, i);

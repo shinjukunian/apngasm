@@ -44,7 +44,7 @@ namespace apngasm {
 		
         /**
          * @brief Construct APNGAsm object from an existing vector of apngasm frames.
-         * @param a std::vector of APNGFrame objects.
+         * @param frames a std::vector of APNGFrame objects.
          */
 		APNGAsm(const std::vector<APNGFrame> &frames);
 
@@ -118,7 +118,7 @@ namespace apngasm {
         
         /**
          * @brief Saves individual PNG files of the frames in the frame vector.
-         * @param fileDir The directory where the PNG fils will be saved.
+         * @param outputDir The directory where the PNG fils will be saved.
          * @return Returns true if all files were saved successfully.
          */
 		bool savePNGs(const std::string& outputDir) const;
