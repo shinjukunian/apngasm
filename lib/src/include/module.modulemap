@@ -1,0 +1,4 @@
+module APNGasm [system] {
+    header "../apngasm.h"
+    export *
+}
