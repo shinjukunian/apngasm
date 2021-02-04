@@ -1,5 +1,6 @@
 #include "apngasm.h"
 #include <cstdlib>
+#include <filesystem>
 #include <png.h>
 #include <zlib.h>
 //#include <boost/algorithm/string/predicate.hpp>
